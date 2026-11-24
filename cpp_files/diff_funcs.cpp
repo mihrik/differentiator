@@ -349,7 +349,13 @@ node_t * diff(const node_t *node)
                            case MUL: return _ADD(_MUL(_DL, _CR), _MUL(_CL, _DR));
                            case DIV: return _DIV(_SUB(_MUL(_DL, _CR), _MUL(_CL, _DR)), _MUL(_CR, _CR));
                            case LOG: return _DIV(_SUB(_DIV(_MUL(_DR, _LN(_CL)), _CR), _DIV(_MUL(_DL, _LN(_CR)), _CL)), _MUL(_LN(_CL), _LN(_CL)));
-                           case EXP: return _MUL(_EXP(_CL, _CR), _ADD(_DIV(_MUL(_CR, _DL), _CL), _MUL(_LN(_CL), _DR)));
+                           case EXP:
+                           {
+                                if (is_num(node->right_child))
+                                    return _MUL(_DL, _MUL(_CR, _EXP(_CL, _SUB(_CR, _NUM(1)))));
+
+                                return _MUL(_EXP(_CL, _CR), _ADD(_DIV(_MUL(_CR, _DL), _CL), _MUL(_LN(_CL), _DR)));
+                           }
                            case UKS: return NULL;
                       }
                  }
@@ -376,7 +382,7 @@ void set_parent(node_t *root)
 node_t * find_derivative(node_t *node, bool *error)
 {
     node_t *derivative = diff(node);
-    simplifier(&node, error);
+    simplifier(&derivative, error);
 
     return derivative;
 }
@@ -698,14 +704,7 @@ void similar_ops(node_t **node, int *changes, bool *error)
 
             SUBSTITUTE_TO_(pow(num1, num2));
         }
-        case LOG:
-        {
-            check_log(node, error);
-            if (*error)
-                return;
-
-            SUBSTITUTE_TO_(log(num2) / log(num1));
-        }
+        case LOG: return;
         case UKS: *error = true;
     }
 }

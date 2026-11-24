@@ -220,7 +220,7 @@ void latex_dump(FILE *tex, node_t *root)
 
     tex_dump_type(tex, root);
 
-    fprintf(tex, "$");
+    fprintf(tex, "$\n");
 }
 
 void tex_dump_type(FILE *tex, node_t *root)
