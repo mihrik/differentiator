@@ -1,0 +1,64 @@
+digraph {
+
+splines=line;
+node1 [color="BLACK", penwidth=1];
+node1 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
+  label = "*"; ]
+
+node1 -> node2 [color="BLACK", penwidth=1];
+node2 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
+  label = "^"; ]
+
+node2 -> node3 [color="BLACK", penwidth=1];
+node3 [shape=triangle; style = filled; fillcolor = "#27d921"; color = "#000000";
+  label = "X"; ]
+
+node2 -> node4 [color="BLACK", penwidth=1];
+node4 [shape=box; style = filled; fillcolor = "#6224c7"; color = "#000000";
+  label = "3"; ]
+
+node1 -> node5 [color="BLACK", penwidth=1];
+node5 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
+  label = "+"; ]
+
+node5 -> node6 [color="BLACK", penwidth=1];
+node6 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
+  label = "/"; ]
+
+node6 -> node7 [color="BLACK", penwidth=1];
+node7 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
+  label = "*"; ]
+
+node7 -> node8 [color="BLACK", penwidth=1];
+node8 [shape=box; style = filled; fillcolor = "#6224c7"; color = "#000000";
+  label = "3"; ]
+
+node7 -> node9 [color="BLACK", penwidth=1];
+node9 [shape=box; style = filled; fillcolor = "#6224c7"; color = "#000000";
+  label = "1"; ]
+
+node6 -> node10 [color="BLACK", penwidth=1];
+node10 [shape=triangle; style = filled; fillcolor = "#27d921"; color = "#000000";
+  label = "X"; ]
+
+node5 -> node11 [color="BLACK", penwidth=1];
+node11 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
+  label = "*"; ]
+
+node11 -> node12 [color="BLACK", penwidth=1];
+node12 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
+  label = "LOG"; ]
+
+node12 -> node13 [color="BLACK", penwidth=1];
+node13 [shape=box; style = filled; fillcolor = "#6224c7"; color = "#000000";
+  label = "2.71828"; ]
+
+node12 -> node14 [color="BLACK", penwidth=1];
+node14 [shape=triangle; style = filled; fillcolor = "#27d921"; color = "#000000";
+  label = "X"; ]
+
+node11 -> node15 [color="BLACK", penwidth=1];
+node15 [shape=box; style = filled; fillcolor = "#6224c7"; color = "#000000";
+  label = "0"; ]
+
+}

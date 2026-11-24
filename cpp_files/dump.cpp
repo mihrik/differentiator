@@ -34,7 +34,8 @@ error_codes print_spears(node_t *root, FILE *png)
 
 error_codes prepare_png(node_t *root, const char fname[])
 {
-    FILE *png = fopen(fname, "w");
+
+    FILE *png = fopen(fname, "w+");
 
     if (png == NULL)
     {
@@ -57,7 +58,11 @@ error_codes prepare_png(node_t *root, const char fname[])
 
 error_codes print_html(node_t *root, const char fname[], const char pic_name[])
 {
-    FILE *png = fopen(fname, "w+");
+    FILE *png = NULL;
+    if (pic_num == 0)
+        png = fopen(fname, "w");
+    else
+        png = fopen(fname, "a");
 
     if (png == NULL)
     {
@@ -79,7 +84,7 @@ error_codes print_html(node_t *root, const char fname[], const char pic_name[])
     sprintf(system_command, "dot %s -Tpng -o %s", pic_file_name, png_file_name);
     system(system_command);
 
-    fprintf(png, "<img src=%s width=1200px>", png_file_name);
+    fprintf(png, "<img src=%s width=1200px>\n", png_file_name);
 
     fclose(png);
 
@@ -158,6 +163,18 @@ void dump_op(FILE *png, node_t *root)
         case DIV:
                     {
                         PRINT_NODE_(/);
+
+                        break;
+                    }
+        case EXP:
+                    {
+                        PRINT_NODE_(^);
+
+                        break;
+                    }
+        case LOG:
+                    {
+                        PRINT_NODE_(LOG);
 
                         break;
                     }
@@ -261,6 +278,36 @@ void div_latex_dump(FILE *tex, node_t *root)
     fprintf(tex, "}");
 }
 
+void exp_latex_dump(FILE *tex, node_t *root)
+{
+    fprintf(tex, "{");
+    tex_dump_type(tex, root->left_child);
+    fprintf(tex, "}");
+    fprintf(tex, "^");
+    fprintf(tex, "{");
+    tex_dump_type(tex, root->right_child);
+    fprintf(tex, "}");
+}
+
+void log_latex_dump(FILE *tex, node_t *root)
+{
+    if (root->left_child->type == NUM && is_zero(root->left_child->value.number - exp(1)))
+    {
+        fprintf(tex, "\\ln{");
+        tex_dump_type(tex, root->right_child);
+        fprintf(tex, "}");
+    }
+    else
+    {
+        fprintf(tex, "\\log");
+        fprintf(tex, "_{");
+        tex_dump_type(tex, root->left_child);
+        fprintf(tex, "}(");
+        tex_dump_type(tex, root->right_child);
+        fprintf(tex, ")");
+    }
+}
+
 void op_latex_dump(FILE *tex, node_t *root)
 {
     switch (root->value.op)
@@ -286,6 +333,18 @@ void op_latex_dump(FILE *tex, node_t *root)
         case DIV:
                     {
                     div_latex_dump(tex, root);
+
+                    break;
+                    }
+        case EXP:
+                    {
+                    exp_latex_dump(tex, root);
+
+                    break;
+                    }
+        case LOG:
+                    {
+                    log_latex_dump(tex, root);
 
                     break;
                     }

@@ -3,38 +3,14 @@ digraph {
 splines=line;
 node1 [color="BLACK", penwidth=1];
 node1 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
-  label = "+"; ]
+  label = "^"; ]
 
 node1 -> node2 [color="BLACK", penwidth=1];
-node2 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
-  label = "-"; ]
-
-node2 -> node3 [color="BLACK", penwidth=1];
-node3 [shape=triangle; style = filled; fillcolor = "#27d921"; color = "#000000";
+node2 [shape=triangle; style = filled; fillcolor = "#27d921"; color = "#000000";
   label = "X"; ]
 
-node2 -> node4 [color="BLACK", penwidth=1];
-node4 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
-  label = "/"; ]
-
-node4 -> node5 [color="BLACK", penwidth=1];
-node5 [shape=triangle; style = filled; fillcolor = "#27d921"; color = "#000000";
-  label = "X"; ]
-
-node4 -> node6 [color="BLACK", penwidth=1];
-node6 [shape=box; style = filled; fillcolor = "#6224c7"; color = "#000000";
-  label = "15"; ]
-
-node1 -> node7 [color="BLACK", penwidth=1];
-node7 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
-  label = "*"; ]
-
-node7 -> node8 [color="BLACK", penwidth=1];
-node8 [shape=box; style = filled; fillcolor = "#6224c7"; color = "#000000";
-  label = "23.1"; ]
-
-node7 -> node9 [color="BLACK", penwidth=1];
-node9 [shape=box; style = filled; fillcolor = "#6224c7"; color = "#000000";
-  label = "-19.1"; ]
+node1 -> node3 [color="BLACK", penwidth=1];
+node3 [shape=box; style = filled; fillcolor = "#6224c7"; color = "#000000";
+  label = "3"; ]
 
 }

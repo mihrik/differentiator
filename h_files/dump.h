@@ -23,5 +23,7 @@ void mul_latex_dump(FILE *tex, node_t *root);
 void div_latex_dump(FILE *tex, node_t *root);
 void op_latex_dump(FILE *tex, node_t *root);
 void var_latex_dump(FILE *tex, node_t *root);
+void exp_latex_dump(FILE *tex, node_t *root);
+void log_latex_dump(FILE *tex, node_t *root);
 
 #endif
