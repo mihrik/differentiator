@@ -357,7 +357,7 @@ double eval_equation(node_t *root, double x_meaning)
                            case ARCCOS: return acos(eval_equation(root->left_child, x_meaning));
                            case ARCSIN: return asin(eval_equation(root->left_child, x_meaning));
                            case ARCTAN: return atan(eval_equation(root->left_child, x_meaning));
-                           case ARCCOT: return M_PI - atan(eval_equation(root->left_child, x_meaning));
+                           case ARCCOT: return M_PI / 2 - atan(eval_equation(root->left_child, x_meaning));
                            case CH    : return cosh(eval_equation(root->left_child, x_meaning));
                            case SH    : return sinh(eval_equation(root->left_child, x_meaning));
                            case TH    : return tanh(eval_equation(root->left_child, x_meaning));
