@@ -25,5 +25,9 @@ void op_latex_dump(FILE *tex, node_t *root);
 void var_latex_dump(FILE *tex, node_t *root);
 void exp_latex_dump(FILE *tex, node_t *root);
 void log_latex_dump(FILE *tex, node_t *root);
+void cot_latex_dump(FILE *tex, node_t *root);
+void tan_latex_dump(FILE *tex, node_t *root);
+void cos_latex_dump(FILE *tex, node_t *root);
+void sin_latex_dump(FILE *tex, node_t *root);
 
 #endif

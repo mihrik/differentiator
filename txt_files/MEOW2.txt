@@ -3,94 +3,102 @@ digraph {
 splines=line;
 node1 [color="BLACK", penwidth=1];
 node1 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
-  label = "+"; ]
-
-node1 -> node2 [color="BLACK", penwidth=1];
-node2 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
   label = "*"; ]
 
-node2 -> node3 [color="BLACK", penwidth=1];
+node1 -> node2 [color="BLACK", penwidth=1];
+node2 [shape=box; style = filled; fillcolor = "#6224c7"; color = "#000000";
+  label = "-1"; ]
+
+node1 -> node3 [color="BLACK", penwidth=1];
 node3 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
   label = "*"; ]
 
 node3 -> node4 [color="BLACK", penwidth=1];
 node4 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
-  label = "^"; ]
+  label = "*"; ]
 
 node4 -> node5 [color="BLACK", penwidth=1];
-node5 [shape=triangle; style = filled; fillcolor = "#27d921"; color = "#000000";
+node5 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
+  label = "^"; ]
+
+node5 -> node6 [color="BLACK", penwidth=1];
+node6 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
+  label = "SIN"; ]
+
+node6 -> node7 [color="BLACK", penwidth=1];
+node7 [shape=triangle; style = filled; fillcolor = "#27d921"; color = "#000000";
   label = "X"; ]
 
-node4 -> node6 [color="BLACK", penwidth=1];
-node6 [shape=triangle; style = filled; fillcolor = "#27d921"; color = "#000000";
+node5 -> node8 [color="BLACK", penwidth=1];
+node8 [shape=triangle; style = filled; fillcolor = "#27d921"; color = "#000000";
   label = "X"; ]
 
-node3 -> node7 [color="BLACK", penwidth=1];
-node7 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
+node4 -> node9 [color="BLACK", penwidth=1];
+node9 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
   label = "+"; ]
 
-node7 -> node8 [color="BLACK", penwidth=1];
-node8 [shape=box; style = filled; fillcolor = "#6224c7"; color = "#000000";
-  label = "1"; ]
-
-node7 -> node9 [color="BLACK", penwidth=1];
-node9 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
-  label = "LOG"; ]
-
 node9 -> node10 [color="BLACK", penwidth=1];
-node10 [shape=box; style = filled; fillcolor = "#6224c7"; color = "#000000";
-  label = "2.71828"; ]
+node10 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
+  label = "/"; ]
 
-node9 -> node11 [color="BLACK", penwidth=1];
-node11 [shape=triangle; style = filled; fillcolor = "#27d921"; color = "#000000";
-  label = "X"; ]
-
-node2 -> node12 [color="BLACK", penwidth=1];
-node12 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
-  label = "^"; ]
-
-node12 -> node13 [color="BLACK", penwidth=1];
-node13 [shape=triangle; style = filled; fillcolor = "#27d921"; color = "#000000";
-  label = "X"; ]
-
-node12 -> node14 [color="BLACK", penwidth=1];
-node14 [shape=box; style = filled; fillcolor = "#6224c7"; color = "#000000";
-  label = "100"; ]
-
-node1 -> node15 [color="BLACK", penwidth=1];
-node15 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
+node10 -> node11 [color="BLACK", penwidth=1];
+node11 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
   label = "*"; ]
+
+node11 -> node12 [color="BLACK", penwidth=1];
+node12 [shape=triangle; style = filled; fillcolor = "#27d921"; color = "#000000";
+  label = "X"; ]
+
+node11 -> node13 [color="BLACK", penwidth=1];
+node13 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
+  label = "COS"; ]
+
+node13 -> node14 [color="BLACK", penwidth=1];
+node14 [shape=triangle; style = filled; fillcolor = "#27d921"; color = "#000000";
+  label = "X"; ]
+
+node10 -> node15 [color="BLACK", penwidth=1];
+node15 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
+  label = "SIN"; ]
 
 node15 -> node16 [color="BLACK", penwidth=1];
-node16 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
-  label = "^"; ]
-
-node16 -> node17 [color="BLACK", penwidth=1];
-node17 [shape=triangle; style = filled; fillcolor = "#27d921"; color = "#000000";
+node16 [shape=triangle; style = filled; fillcolor = "#27d921"; color = "#000000";
   label = "X"; ]
 
-node16 -> node18 [color="BLACK", penwidth=1];
-node18 [shape=triangle; style = filled; fillcolor = "#27d921"; color = "#000000";
-  label = "X"; ]
+node9 -> node17 [color="BLACK", penwidth=1];
+node17 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
+  label = "LOG"; ]
 
-node15 -> node19 [color="BLACK", penwidth=1];
+node17 -> node18 [color="BLACK", penwidth=1];
+node18 [shape=box; style = filled; fillcolor = "#6224c7"; color = "#000000";
+  label = "2.71828"; ]
+
+node17 -> node19 [color="BLACK", penwidth=1];
 node19 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
-  label = "*"; ]
+  label = "SIN"; ]
 
 node19 -> node20 [color="BLACK", penwidth=1];
-node20 [shape=box; style = filled; fillcolor = "#6224c7"; color = "#000000";
-  label = "100"; ]
-
-node19 -> node21 [color="BLACK", penwidth=1];
-node21 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
-  label = "^"; ]
-
-node21 -> node22 [color="BLACK", penwidth=1];
-node22 [shape=triangle; style = filled; fillcolor = "#27d921"; color = "#000000";
+node20 [shape=triangle; style = filled; fillcolor = "#27d921"; color = "#000000";
   label = "X"; ]
 
-node21 -> node23 [color="BLACK", penwidth=1];
-node23 [shape=box; style = filled; fillcolor = "#6224c7"; color = "#000000";
-  label = "99"; ]
+node3 -> node21 [color="BLACK", penwidth=1];
+node21 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
+  label = "SIN"; ]
+
+node21 -> node22 [color="BLACK", penwidth=1];
+node22 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
+  label = "^"; ]
+
+node22 -> node23 [color="BLACK", penwidth=1];
+node23 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
+  label = "SIN"; ]
+
+node23 -> node24 [color="BLACK", penwidth=1];
+node24 [shape=triangle; style = filled; fillcolor = "#27d921"; color = "#000000";
+  label = "X"; ]
+
+node22 -> node25 [color="BLACK", penwidth=1];
+node25 [shape=triangle; style = filled; fillcolor = "#27d921"; color = "#000000";
+  label = "X"; ]
 
 }

@@ -33,6 +33,10 @@ typedef enum arithmetic_op
     DIV = 4,
     EXP = 5,
     LOG = 6,
+    COS = 7,
+    SIN = 8,
+    TAN = 9,
+    COT = 10,
     UKS = 666
 } arithmetic_op;
 
@@ -106,5 +110,6 @@ void check_div(node_t **node, bool *error);
 void check_log(node_t **node, bool *error);
 void check_exp(node_t **node, bool *error);
 void simplifier(node_t **root, bool *error);
+bool is_unary(node_t *node);
 
 #endif

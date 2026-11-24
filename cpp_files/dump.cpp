@@ -22,11 +22,13 @@ error_codes print_spears(node_t *root, FILE *png)
         fprintf(png, "node%d -> ", cur_node);
         print_spears(root->left_child, png);
     }
-
-    if (root->right_child)
+    if (!is_unary(root))
     {
-        fprintf(png, "node%d -> ", cur_node);
-        print_spears(root->right_child, png);
+        if (root->right_child)
+        {
+            fprintf(png, "node%d -> ", cur_node);
+            print_spears(root->right_child, png);
+        }
     }
 
     return SUCCESSFUL_RETURN;
@@ -178,6 +180,30 @@ void dump_op(FILE *png, node_t *root)
 
                         break;
                     }
+        case COS:
+                    {
+                        PRINT_NODE_(COS);
+
+                        break;
+                    }
+        case SIN:
+                    {
+                        PRINT_NODE_(SIN);
+
+                        break;
+                    }
+        case TAN:
+                    {
+                        PRINT_NODE_(TAN);
+
+                        break;
+                    }
+        case COT:
+                    {
+                        PRINT_NODE_(COT);
+
+                        break;
+                    }
         case UKS:
                     {
                         PRINT_NODE_(Unknown_sign);
@@ -261,11 +287,11 @@ void add_latex_dump(FILE *tex, node_t *root)
 
 void mul_latex_dump(FILE *tex, node_t *root)
 {
-    fprintf(tex, "(");
+    fprintf(tex, "{");
     tex_dump_type(tex, root->left_child);
     fprintf(tex, "\\cdot");
     tex_dump_type(tex, root->right_child);
-    fprintf(tex, ")");
+    fprintf(tex, "}");
 }
 
 void div_latex_dump(FILE *tex, node_t *root)
@@ -289,13 +315,41 @@ void exp_latex_dump(FILE *tex, node_t *root)
     fprintf(tex, "}");
 }
 
+void cos_latex_dump(FILE *tex, node_t *root)
+{
+    fprintf(tex, "\\cos(");
+    tex_dump_type(tex, root->left_child);
+    fprintf(tex, ")");
+}
+
+void sin_latex_dump(FILE *tex, node_t *root)
+{
+    fprintf(tex, "\\sin(");
+    tex_dump_type(tex, root->left_child);
+    fprintf(tex, ")");
+}
+
+void tan_latex_dump(FILE *tex, node_t *root)
+{
+    fprintf(tex, "\\tan(");
+    tex_dump_type(tex, root->left_child);
+    fprintf(tex, ")");
+}
+
+void cot_latex_dump(FILE *tex, node_t *root)
+{
+    fprintf(tex, "\\cot(");
+    tex_dump_type(tex, root->left_child);
+    fprintf(tex, "}");
+}
+
 void log_latex_dump(FILE *tex, node_t *root)
 {
     if (root->left_child->type == NUM && is_zero(root->left_child->value.number - exp(1)))
     {
-        fprintf(tex, "\\ln{");
+        fprintf(tex, "\\ln(");
         tex_dump_type(tex, root->right_child);
-        fprintf(tex, "}");
+        fprintf(tex, ")");
     }
     else
     {
@@ -314,39 +368,63 @@ void op_latex_dump(FILE *tex, node_t *root)
     {
         case ADD:
                     {
-                    add_latex_dump(tex, root);
+                        add_latex_dump(tex, root);
 
-                    break;
+                        break;
                     }
         case SUB:
                     {
-                    sub_latex_dump(tex, root);
+                        sub_latex_dump(tex, root);
 
-                    break;
+                        break;
                     }
         case MUL:
                     {
-                    mul_latex_dump(tex, root);
+                        mul_latex_dump(tex, root);
 
-                    break;
+                        break;
                     }
         case DIV:
                     {
-                    div_latex_dump(tex, root);
+                        div_latex_dump(tex, root);
 
-                    break;
+                        break;
                     }
         case EXP:
                     {
-                    exp_latex_dump(tex, root);
+                        exp_latex_dump(tex, root);
 
-                    break;
+                        break;
                     }
         case LOG:
                     {
-                    log_latex_dump(tex, root);
+                        log_latex_dump(tex, root);
 
-                    break;
+                        break;
+                    }
+        case COS:
+                    {
+                        cos_latex_dump(tex, root);
+
+                        break;
+                    }
+        case SIN:
+                    {
+                        sin_latex_dump(tex, root);
+
+                        break;
+                    }
+        case TAN:
+                    {
+                        tan_latex_dump(tex, root);
+
+                        break;
+                    }
+        case COT:
+                    {
+                        cot_latex_dump(tex, root);
+
+                        break;
                     }
         case UKS: break;
     }

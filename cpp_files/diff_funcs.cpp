@@ -47,7 +47,10 @@ bool is_arsign(int sign)
 
 bool is_complex_op(char user_input[])
 {
-    return (strcmp(user_input, "log") == 0) ? true : false;
+    bool is_op = (strcmp(user_input, "log") == 0) || (strcmp(user_input, "cos") == 0)
+        || (strcmp(user_input, "sin") == 0) || (strcmp(user_input, "tan") == 0)
+        || (strcmp(user_input, "cot") == 0);
+    return is_op;
 }
 
 arithmetic_op get_op(int op)
@@ -69,6 +72,14 @@ arithmetic_op get_complex_op(char user_input[])
 {
     if (strcmp(user_input, "log") == 0)
         return LOG;
+    if (strcmp(user_input, "cos") == 0)
+        return COS;
+    if (strcmp(user_input, "sin") == 0)
+        return SIN;
+    if (strcmp(user_input, "tan") == 0)
+        return TAN;
+    if (strcmp(user_input, "cot") == 0)
+        return COT;
 
     return UKS;
 }
@@ -257,6 +268,14 @@ error_codes value_analysis(char user_input[], node_t *node)
     return SUCCESSFUL_RETURN;
 }
 
+bool is_unary(node_t *node)
+{
+    if (is_op(node))
+        return node->value.op == COS || node->value.op == SIN || node->value.op == TAN || node->value.op == COT;
+
+    return false;
+}
+
 error_codes nodes_checking(node_t *node, FILE *fp)
 {
     error_codes err = SUCCESSFUL_RETURN;
@@ -271,8 +290,11 @@ error_codes nodes_checking(node_t *node, FILE *fp)
     if (node->right_child == NULL)
     {
         node->right_child = _NUM(0);
-        if ((err = read_equation(fp, node->right_child, node)) != SUCCESSFUL_RETURN)
-            return err;
+        if (!is_unary(node))
+        {
+            if ((err = read_equation(fp, node->right_child, node)) != SUCCESSFUL_RETURN)
+                return err;
+        }
     }
 
     if (getc(fp) != ')')
@@ -301,6 +323,10 @@ double eval_equation(node_t *root, double x_meaning)
                            case DIV: RETURN_EVAL_NODE_(/);
                            case EXP: return pow(eval_equation(root->left_child, x_meaning), eval_equation(root->right_child, x_meaning));
                            case LOG: return log(eval_equation(root->right_child, x_meaning)) / log(eval_equation(root->left_child, x_meaning));
+                           case COS: return cos(eval_equation(root->left_child, x_meaning));
+                           case SIN: return sin(eval_equation(root->left_child, x_meaning));
+                           case TAN: return tan(eval_equation(root->left_child, x_meaning));
+                           case COT: return 1 / tan(eval_equation(root->left_child, x_meaning));
                            case UKS: return 0;
                       }
                  }
@@ -356,6 +382,10 @@ node_t * diff(const node_t *node)
 
                                 return _MUL(_EXP(_CL, _CR), _ADD(_DIV(_MUL(_CR, _DL), _CL), _MUL(_LN(_CL), _DR)));
                            }
+                           case SIN: return _MUL(_DL, _COS(_CL));
+                           case COS: return _SUB(_NUM(0), _MUL(_DL, _SIN(_CL)));
+                           case TAN: return _MUL(_DL, _DIV(_NUM(1), _EXP(_COS(_CL), _NUM(2))));
+                           case COT: return _SUB(_NUM(0), _MUL(_DL, _DIV(_NUM(1), _EXP(_SIN(_CL), _NUM(2)))));
                            case UKS: return NULL;
                       }
                  }
@@ -455,6 +485,13 @@ void simplify_sub(node_t **node, int *changes)
     {
         (*node)->right_child->value.number = -(*node)->right_child->value.number;
         SUBSTITUTE_TO_RIGHT_;
+    }
+    else if (node_is_number((*node)->left_child, 0))
+    {
+        (*node)->value.op = MUL;
+        (*node)->left_child->value.number = -1;
+        (*changes)++;
+        return;
     }
     if (node_is_number((*node)->right_child, 0))
     {
@@ -616,6 +653,10 @@ void simplify_operation(node_t **node, int *changes, bool *error)
 
             simplify_log(node, changes); break;
         }
+        case COS:
+        case SIN:
+        case TAN:
+        case COT: break;
         case UKS: *error = true;
     }
 }
@@ -704,6 +745,10 @@ void similar_ops(node_t **node, int *changes, bool *error)
 
             SUBSTITUTE_TO_(pow(num1, num2));
         }
+        case COS:
+        case SIN:
+        case TAN:
+        case COT:
         case LOG: return;
         case UKS: *error = true;
     }
