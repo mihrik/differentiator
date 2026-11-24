@@ -41,6 +41,10 @@ typedef enum arithmetic_op
     ARCCOS = 12,
     ARCTAN = 13,
     ARCCOT = 14,
+    TH     = 15,
+    CTH    = 16,
+    SH     = 17,
+    CH     = 18,
     UKS = 666
 } arithmetic_op;
 

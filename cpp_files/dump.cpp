@@ -228,6 +228,30 @@ void dump_op(FILE *png, node_t *root)
 
             break;
         }
+        case CH    :
+        {
+            PRINT_NODE_(CH);
+
+            break;
+        }
+        case SH    :
+        {
+            PRINT_NODE_(SH);
+
+            break;
+        }
+        case TH    :
+        {
+            PRINT_NODE_(TH);
+
+            break;
+        }
+        case CTH   :
+        {
+            PRINT_NODE_(CTH);
+
+            break;
+        }
         case UKS:
         {
             PRINT_NODE_(Unknown_sign);
@@ -341,13 +365,27 @@ void div_latex_dump(FILE *tex, node_t *root)
 
 void exp_latex_dump(FILE *tex, node_t *root)
 {
-    fprintf(tex, "{");
-    tex_dump_type(tex, root->left_child);
-    fprintf(tex, "}");
-    fprintf(tex, "^");
-    fprintf(tex, "{");
-    tex_dump_type(tex, root->right_child);
-    fprintf(tex, "}");
+    if (root->left_child->type == NUM && is_zero(root->left_child->value.number - exp(1)))
+    {
+        fprintf(tex, "e^");
+    }
+    else
+    {
+        fprintf(tex, "{");
+        tex_dump_type(tex, root->left_child);
+        fprintf(tex, "}^");
+    }
+
+    if (root->right_child->type == NUM && is_zero(root->right_child->value.number - exp(1)))
+    {
+        fprintf(tex, "{e}");
+    }
+    else
+    {
+        fprintf(tex, "{");
+        tex_dump_type(tex, root->right_child);
+        fprintf(tex, "}");
+    }
 }
 
 void cos_latex_dump(FILE *tex, node_t *root)
@@ -402,6 +440,34 @@ void arctan_latex_dump(FILE *tex, node_t *root)
 void arccot_latex_dump(FILE *tex, node_t *root)
 {
     fprintf(tex, "\\cot^{-1}(");
+    tex_dump_type(tex, root->left_child);
+    fprintf(tex, ")");
+}
+
+void ch_latex_dump(FILE *tex, node_t *root)
+{
+    fprintf(tex, "\\cosh(");
+    tex_dump_type(tex, root->left_child);
+    fprintf(tex, ")");
+}
+
+void sh_latex_dump(FILE *tex, node_t *root)
+{
+    fprintf(tex, "\\sinh(");
+    tex_dump_type(tex, root->left_child);
+    fprintf(tex, ")");
+}
+
+void th_latex_dump(FILE *tex, node_t *root)
+{
+    fprintf(tex, "\\tanh(");
+    tex_dump_type(tex, root->left_child);
+    fprintf(tex, ")");
+}
+
+void cth_latex_dump(FILE *tex, node_t *root)
+{
+    fprintf(tex, "\\coth(");
     tex_dump_type(tex, root->left_child);
     fprintf(tex, ")");
 }
@@ -510,6 +576,30 @@ void op_latex_dump(FILE *tex, node_t *root)
         case ARCCOT:
         {
             arccot_latex_dump(tex, root);
+
+            break;
+        }
+        case CH    :
+        {
+            ch_latex_dump(tex, root);
+
+            break;
+        }
+        case SH    :
+        {
+            sh_latex_dump(tex, root);
+
+            break;
+        }
+        case TH    :
+        {
+            th_latex_dump(tex, root);
+
+            break;
+        }
+        case CTH   :
+        {
+            cth_latex_dump(tex, root);
 
             break;
         }

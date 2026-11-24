@@ -51,7 +51,9 @@ bool is_complex_op(char user_input[])
         || (strcmp(user_input, "sin") == 0) || (strcmp(user_input, "tan") == 0)
         || (strcmp(user_input, "cot") == 0) || (strcmp(user_input, "arcsin") == 0)
         || (strcmp(user_input, "arccos") == 0) || (strcmp(user_input, "arctan") == 0)
-        || (strcmp(user_input, "arccot") == 0);
+        || (strcmp(user_input, "arccot") == 0) || (strcmp(user_input, "ch") == 0)
+        || (strcmp(user_input, "sh") == 0) || (strcmp(user_input, "th") == 0)
+        || (strcmp(user_input, "cth") == 0);
     return is_op;
 }
 
@@ -90,6 +92,14 @@ arithmetic_op get_complex_op(char user_input[])
         return ARCTAN;
     if (strcmp(user_input, "arccot") == 0)
         return ARCCOT;
+    if (strcmp(user_input, "ch") == 0)
+        return CH;
+    if (strcmp(user_input, "sh") == 0)
+        return SH;
+    if (strcmp(user_input, "th") == 0)
+        return TH;
+    if (strcmp(user_input, "cth") == 0)
+        return CTH;
     return UKS;
 }
 
@@ -184,12 +194,18 @@ error_codes number_analysis(char user_input[], node_t *node)
     double number = 0;
     number = strtod(user_input, &endptr);
 
-    if (endptr != user_input)
+    if (endptr != user_input || (user_input[0] == 'e' && user_input[1] == '\0'))
     {
-        if (*endptr != '\0')
+        if (*endptr != '\0' && !(user_input[0] == 'e' && user_input[1] == '\0'))
         {
             PRINT_COLOR(EXTRA_RED_, "%s не является корректным числовым вводом\n", user_input);
             return WRONG_INPUT;
+        }
+        else if ((user_input[0] == 'e' && user_input[1] == '\0'))
+        {
+            node->value.number = exp(1);
+            node->type = NUM;
+            return SUCCESSFUL_RETURN;
         }
         else
         {
@@ -281,7 +297,8 @@ bool is_unary(node_t *node)
 {
     if (is_op(node))
         return node->value.op == COS || node->value.op == SIN || node->value.op == TAN || node->value.op == COT ||
-            node->value.op == ARCCOS || node->value.op == ARCSIN || node->value.op == ARCTAN || node->value.op == ARCCOT;
+            node->value.op == ARCCOS || node->value.op == ARCSIN || node->value.op == ARCTAN || node->value.op == ARCCOT
+            || node->value.op == SH || node->value.op == CH || node->value.op == TH || node->value.op == CTH;
 
     return false;
 }
@@ -341,6 +358,10 @@ double eval_equation(node_t *root, double x_meaning)
                            case ARCSIN: return asin(eval_equation(root->left_child, x_meaning));
                            case ARCTAN: return atan(eval_equation(root->left_child, x_meaning));
                            case ARCCOT: return M_PI - atan(eval_equation(root->left_child, x_meaning));
+                           case CH    : return cosh(eval_equation(root->left_child, x_meaning));
+                           case SH    : return sinh(eval_equation(root->left_child, x_meaning));
+                           case TH    : return tanh(eval_equation(root->left_child, x_meaning));
+                           case CTH   : return 1 / tanh(eval_equation(root->left_child, x_meaning));
                            case UKS   : return 0;
                       }
                  }
@@ -404,6 +425,10 @@ node_t * diff(const node_t *node)
                            case ARCCOS: return _MUL(_NUM(-1), _MUL(_DL, _DIV(_NUM(1), _EXP(_SUB(_NUM(1), _EXP(_CL, _NUM(2))), _NUM(0.5)))));
                            case ARCTAN: return _MUL(_DL, _DIV(_NUM(1), _ADD(_NUM(1), _EXP(_CL, _NUM(2)))));
                            case ARCCOT: return _MUL(_NUM(-1), _MUL(_DL, _DIV(_NUM(1), _ADD(_NUM(1), _EXP(_CL, _NUM(2))))));
+                           case SH    : return _MUL(_DL, _CH(_CL));
+                           case CH    : return _MUL(_DL, _SH(_CL));
+                           case TH    : return _MUL(_DL, _DIV(_NUM(1), _EXP(_CH(_CL), _NUM(2))));
+                           case CTH   : return _SUB(_NUM(0), _MUL(_DL, _DIV(_NUM(1), _EXP(_SH(_CL), _NUM(2)))));
                            case UKS   : return NULL;
                       }
                  }
@@ -678,6 +703,10 @@ void simplify_operation(node_t **node, int *changes, bool *error)
         case ARCSIN:
         case ARCTAN:
         case ARCCOT:
+        case SH    :
+        case CH    :
+        case TH    :
+        case CTH   :
         case COT   : break;
         case UKS   : *error = true;
     }
@@ -775,6 +804,10 @@ void similar_ops(node_t **node, int *changes, bool *error)
         case ARCSIN:
         case ARCTAN:
         case ARCCOT:
+        case TH    :
+        case SH    :
+        case CH    :
+        case CTH   :
         case LOG   : return;
         case UKS   : *error = true;
     }

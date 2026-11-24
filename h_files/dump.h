@@ -33,5 +33,9 @@ void arccot_latex_dump(FILE *tex, node_t *root);
 void arctan_latex_dump(FILE *tex, node_t *root);
 void arccos_latex_dump(FILE *tex, node_t *root);
 void arcsin_latex_dump(FILE *tex, node_t *root);
+void ch_latex_dump(FILE *tex, node_t *root);
+void th_latex_dump(FILE *tex, node_t *root);
+void cth_latex_dump(FILE *tex, node_t *root);
+void sh_latex_dump(FILE *tex, node_t *root);
 
 #endif
