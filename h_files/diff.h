@@ -27,16 +27,20 @@ typedef enum error_codes
 
 typedef enum arithmetic_op
 {
-    ADD = 1,
-    SUB = 2,
-    MUL = 3,
-    DIV = 4,
-    EXP = 5,
-    LOG = 6,
-    COS = 7,
-    SIN = 8,
-    TAN = 9,
-    COT = 10,
+    ADD    = 1,
+    SUB    = 2,
+    MUL    = 3,
+    DIV    = 4,
+    EXP    = 5,
+    LOG    = 6,
+    COS    = 7,
+    SIN    = 8,
+    TAN    = 9,
+    COT    = 10,
+    ARCSIN = 11,
+    ARCCOS = 12,
+    ARCTAN = 13,
+    ARCCOT = 14,
     UKS = 666
 } arithmetic_op;
 

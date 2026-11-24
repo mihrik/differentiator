@@ -49,7 +49,9 @@ bool is_complex_op(char user_input[])
 {
     bool is_op = (strcmp(user_input, "log") == 0) || (strcmp(user_input, "cos") == 0)
         || (strcmp(user_input, "sin") == 0) || (strcmp(user_input, "tan") == 0)
-        || (strcmp(user_input, "cot") == 0);
+        || (strcmp(user_input, "cot") == 0) || (strcmp(user_input, "arcsin") == 0)
+        || (strcmp(user_input, "arccos") == 0) || (strcmp(user_input, "arctan") == 0)
+        || (strcmp(user_input, "arccot") == 0);
     return is_op;
 }
 
@@ -80,7 +82,14 @@ arithmetic_op get_complex_op(char user_input[])
         return TAN;
     if (strcmp(user_input, "cot") == 0)
         return COT;
-
+    if (strcmp(user_input, "arccos") == 0)
+        return ARCCOS;
+    if (strcmp(user_input, "arcsin") == 0)
+        return ARCSIN;
+    if (strcmp(user_input, "arctan") == 0)
+        return ARCTAN;
+    if (strcmp(user_input, "arccot") == 0)
+        return ARCCOT;
     return UKS;
 }
 
@@ -271,7 +280,8 @@ error_codes value_analysis(char user_input[], node_t *node)
 bool is_unary(node_t *node)
 {
     if (is_op(node))
-        return node->value.op == COS || node->value.op == SIN || node->value.op == TAN || node->value.op == COT;
+        return node->value.op == COS || node->value.op == SIN || node->value.op == TAN || node->value.op == COT ||
+            node->value.op == ARCCOS || node->value.op == ARCSIN || node->value.op == ARCTAN || node->value.op == ARCCOT;
 
     return false;
 }
@@ -317,17 +327,21 @@ double eval_equation(node_t *root, double x_meaning)
                  {
                       switch (root->value.op)
                       {
-                           case ADD: RETURN_EVAL_NODE_(+);
-                           case SUB: RETURN_EVAL_NODE_(-);
-                           case MUL: RETURN_EVAL_NODE_(*);
-                           case DIV: RETURN_EVAL_NODE_(/);
-                           case EXP: return pow(eval_equation(root->left_child, x_meaning), eval_equation(root->right_child, x_meaning));
-                           case LOG: return log(eval_equation(root->right_child, x_meaning)) / log(eval_equation(root->left_child, x_meaning));
-                           case COS: return cos(eval_equation(root->left_child, x_meaning));
-                           case SIN: return sin(eval_equation(root->left_child, x_meaning));
-                           case TAN: return tan(eval_equation(root->left_child, x_meaning));
-                           case COT: return 1 / tan(eval_equation(root->left_child, x_meaning));
-                           case UKS: return 0;
+                           case ADD   : RETURN_EVAL_NODE_(+);
+                           case SUB   : RETURN_EVAL_NODE_(-);
+                           case MUL   : RETURN_EVAL_NODE_(*);
+                           case DIV   : RETURN_EVAL_NODE_(/);
+                           case EXP   : return pow(eval_equation(root->left_child, x_meaning), eval_equation(root->right_child, x_meaning));
+                           case LOG   : return log(eval_equation(root->right_child, x_meaning)) / log(eval_equation(root->left_child, x_meaning));
+                           case COS   : return cos(eval_equation(root->left_child, x_meaning));
+                           case SIN   : return sin(eval_equation(root->left_child, x_meaning));
+                           case TAN   : return tan(eval_equation(root->left_child, x_meaning));
+                           case COT   : return 1 / tan(eval_equation(root->left_child, x_meaning));
+                           case ARCCOS: return acos(eval_equation(root->left_child, x_meaning));
+                           case ARCSIN: return asin(eval_equation(root->left_child, x_meaning));
+                           case ARCTAN: return atan(eval_equation(root->left_child, x_meaning));
+                           case ARCCOT: return M_PI - atan(eval_equation(root->left_child, x_meaning));
+                           case UKS   : return 0;
                       }
                  }
     }
@@ -370,23 +384,27 @@ node_t * diff(const node_t *node)
                  {
                       switch (node->value.op)
                       {
-                           case ADD: return _ADD(_DL, _DR);
-                           case SUB: return _SUB(_DL, _DR);
-                           case MUL: return _ADD(_MUL(_DL, _CR), _MUL(_CL, _DR));
-                           case DIV: return _DIV(_SUB(_MUL(_DL, _CR), _MUL(_CL, _DR)), _MUL(_CR, _CR));
-                           case LOG: return _DIV(_SUB(_DIV(_MUL(_DR, _LN(_CL)), _CR), _DIV(_MUL(_DL, _LN(_CR)), _CL)), _MUL(_LN(_CL), _LN(_CL)));
-                           case EXP:
+                           case ADD   : return _ADD(_DL, _DR);
+                           case SUB   : return _SUB(_DL, _DR);
+                           case MUL   : return _ADD(_MUL(_DL, _CR), _MUL(_CL, _DR));
+                           case DIV   : return _DIV(_SUB(_MUL(_DL, _CR), _MUL(_CL, _DR)), _MUL(_CR, _CR));
+                           case LOG   : return _DIV(_SUB(_DIV(_MUL(_DR, _LN(_CL)), _CR), _DIV(_MUL(_DL, _LN(_CR)), _CL)), _MUL(_LN(_CL), _LN(_CL)));
+                           case EXP   :
                            {
                                 if (is_num(node->right_child))
                                     return _MUL(_DL, _MUL(_CR, _EXP(_CL, _SUB(_CR, _NUM(1)))));
 
                                 return _MUL(_EXP(_CL, _CR), _ADD(_DIV(_MUL(_CR, _DL), _CL), _MUL(_LN(_CL), _DR)));
                            }
-                           case SIN: return _MUL(_DL, _COS(_CL));
-                           case COS: return _SUB(_NUM(0), _MUL(_DL, _SIN(_CL)));
-                           case TAN: return _MUL(_DL, _DIV(_NUM(1), _EXP(_COS(_CL), _NUM(2))));
-                           case COT: return _SUB(_NUM(0), _MUL(_DL, _DIV(_NUM(1), _EXP(_SIN(_CL), _NUM(2)))));
-                           case UKS: return NULL;
+                           case SIN   : return _MUL(_DL, _COS(_CL));
+                           case COS   : return _SUB(_NUM(0), _MUL(_DL, _SIN(_CL)));
+                           case TAN   : return _MUL(_DL, _DIV(_NUM(1), _EXP(_COS(_CL), _NUM(2))));
+                           case COT   : return _SUB(_NUM(0), _MUL(_DL, _DIV(_NUM(1), _EXP(_SIN(_CL), _NUM(2)))));
+                           case ARCSIN: return _MUL(_DL, _DIV(_NUM(1), _EXP(_SUB(_NUM(1), _EXP(_CL, _NUM(2))), _NUM(0.5))));
+                           case ARCCOS: return _MUL(_NUM(-1), _MUL(_DL, _DIV(_NUM(1), _EXP(_SUB(_NUM(1), _EXP(_CL, _NUM(2))), _NUM(0.5)))));
+                           case ARCTAN: return _MUL(_DL, _DIV(_NUM(1), _ADD(_NUM(1), _EXP(_CL, _NUM(2)))));
+                           case ARCCOT: return _MUL(_NUM(-1), _MUL(_DL, _DIV(_NUM(1), _ADD(_NUM(1), _EXP(_CL, _NUM(2))))));
+                           case UKS   : return NULL;
                       }
                  }
     }
@@ -617,15 +635,15 @@ void simplify_operation(node_t **node, int *changes, bool *error)
 {
     switch((*node)->value.op)
     {
-        case ADD:
+        case ADD   :
         {
             simplify_add(node, changes); break;
         }
-        case MUL:
+        case MUL   :
         {
             simplify_mul(node, changes); break;
         }
-        case DIV:
+        case DIV   :
         {
             check_div(node, error);
             if (*error)
@@ -633,7 +651,7 @@ void simplify_operation(node_t **node, int *changes, bool *error)
 
             simplify_div(node, changes); break;
         }
-        case EXP:
+        case EXP   :
         {
             check_exp(node, error);
             if (*error)
@@ -641,11 +659,11 @@ void simplify_operation(node_t **node, int *changes, bool *error)
 
             simplify_exp(node, changes); break;
         }
-        case SUB:
+        case SUB   :
         {
             simplify_sub(node, changes); break;
         }
-        case LOG:
+        case LOG   :
         {
             check_log(node, error);
             if (*error)
@@ -653,11 +671,15 @@ void simplify_operation(node_t **node, int *changes, bool *error)
 
             simplify_log(node, changes); break;
         }
-        case COS:
-        case SIN:
-        case TAN:
-        case COT: break;
-        case UKS: *error = true;
+        case COS   :
+        case SIN   :
+        case TAN   :
+        case ARCCOS:
+        case ARCSIN:
+        case ARCTAN:
+        case ARCCOT:
+        case COT   : break;
+        case UKS   : *error = true;
     }
 }
 
@@ -717,19 +739,19 @@ void similar_ops(node_t **node, int *changes, bool *error)
 
     switch ((*node)->value.op)
     {
-        case ADD:
+        case ADD   :
         {
             SUBSTITUTE_TO_(num1 + num2);
         }
-        case SUB:
+        case SUB   :
         {
             SUBSTITUTE_TO_(num1 - num2);
         }
-        case MUL:
+        case MUL   :
         {
             SUBSTITUTE_TO_(num1 * num2);
         }
-        case DIV:
+        case DIV   :
         {
             check_div(node, error);
             if (*error)
@@ -737,7 +759,7 @@ void similar_ops(node_t **node, int *changes, bool *error)
 
             SUBSTITUTE_TO_(num1 / num2);
         }
-        case EXP:
+        case EXP   :
         {
             check_exp(node, error);
             if (*error)
@@ -745,12 +767,16 @@ void similar_ops(node_t **node, int *changes, bool *error)
 
             SUBSTITUTE_TO_(pow(num1, num2));
         }
-        case COS:
-        case SIN:
-        case TAN:
-        case COT:
-        case LOG: return;
-        case UKS: *error = true;
+        case COS   :
+        case SIN   :
+        case TAN   :
+        case COT   :
+        case ARCCOS:
+        case ARCSIN:
+        case ARCTAN:
+        case ARCCOT:
+        case LOG   : return;
+        case UKS   : *error = true;
     }
 }
 

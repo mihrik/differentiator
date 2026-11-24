@@ -29,5 +29,9 @@ void cot_latex_dump(FILE *tex, node_t *root);
 void tan_latex_dump(FILE *tex, node_t *root);
 void cos_latex_dump(FILE *tex, node_t *root);
 void sin_latex_dump(FILE *tex, node_t *root);
+void arccot_latex_dump(FILE *tex, node_t *root);
+void arctan_latex_dump(FILE *tex, node_t *root);
+void arccos_latex_dump(FILE *tex, node_t *root);
+void arcsin_latex_dump(FILE *tex, node_t *root);
 
 #endif

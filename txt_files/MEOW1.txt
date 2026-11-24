@@ -3,22 +3,22 @@ digraph {
 splines=line;
 node1 [color="BLACK", penwidth=1];
 node1 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
-  label = "COS"; ]
+  label = "ARCCOT"; ]
 
 node1 -> node2 [color="BLACK", penwidth=1];
 node2 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
-  label = "^"; ]
+  label = "SIN"; ]
 
 node2 -> node3 [color="BLACK", penwidth=1];
 node3 [shape=circle; style = filled; fillcolor = "#bdc951"; color = "#000000";
-  label = "SIN"; ]
+  label = "^"; ]
 
 node3 -> node4 [color="BLACK", penwidth=1];
 node4 [shape=triangle; style = filled; fillcolor = "#27d921"; color = "#000000";
   label = "X"; ]
 
-node2 -> node5 [color="BLACK", penwidth=1];
-node5 [shape=triangle; style = filled; fillcolor = "#27d921"; color = "#000000";
-  label = "X"; ]
+node3 -> node5 [color="BLACK", penwidth=1];
+node5 [shape=box; style = filled; fillcolor = "#6224c7"; color = "#000000";
+  label = "2"; ]
 
 }

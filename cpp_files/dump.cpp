@@ -144,72 +144,96 @@ void dump_op(FILE *png, node_t *root)
 {
     switch (root->value.op)
     {
-        case ADD:
-                    {
-                        PRINT_NODE_(+);
+        case ADD   :
+        {
+            PRINT_NODE_(+);
 
-                        break;
-                    }
-        case MUL:
-                    {
-                        PRINT_NODE_(*);
+            break;
+        }
+        case MUL   :
+        {
+            PRINT_NODE_(*);
 
-                        break;
-                    }
-        case SUB:
-                    {
-                        PRINT_NODE_(-);
+            break;
+        }
+        case SUB   :
+        {
+            PRINT_NODE_(-);
 
-                        break;
-                    }
-        case DIV:
-                    {
-                        PRINT_NODE_(/);
+            break;
+        }
+        case DIV   :
+        {
+            PRINT_NODE_(/);
 
-                        break;
-                    }
-        case EXP:
-                    {
-                        PRINT_NODE_(^);
+            break;
+        }
+        case EXP   :
+        {
+            PRINT_NODE_(^);
 
-                        break;
-                    }
-        case LOG:
-                    {
-                        PRINT_NODE_(LOG);
+            break;
+        }
+        case LOG   :
+        {
+            PRINT_NODE_(LOG);
 
-                        break;
-                    }
-        case COS:
-                    {
-                        PRINT_NODE_(COS);
+            break;
+        }
+        case COS   :
+        {
+            PRINT_NODE_(COS);
 
-                        break;
-                    }
-        case SIN:
-                    {
-                        PRINT_NODE_(SIN);
+            break;
+        }
+        case SIN   :
+        {
+            PRINT_NODE_(SIN);
 
-                        break;
-                    }
-        case TAN:
-                    {
-                        PRINT_NODE_(TAN);
+            break;
+        }
+        case TAN   :
+        {
+            PRINT_NODE_(TAN);
 
-                        break;
-                    }
-        case COT:
-                    {
-                        PRINT_NODE_(COT);
+            break;
+        }
+        case COT   :
+        {
+            PRINT_NODE_(COT);
 
-                        break;
-                    }
+            break;
+        }
+        case ARCCOS:
+        {
+            PRINT_NODE_(ARCCOS);
+
+            break;
+        }
+        case ARCSIN:
+        {
+            PRINT_NODE_(ARCSIN);
+
+            break;
+        }
+        case ARCTAN:
+        {
+            PRINT_NODE_(ARCTAN);
+
+            break;
+        }
+        case ARCCOT:
+        {
+            PRINT_NODE_(ARCCOT);
+
+            break;
+        }
         case UKS:
-                    {
-                        PRINT_NODE_(Unknown_sign);
+        {
+            PRINT_NODE_(Unknown_sign);
 
-                        break;
-                    }
+            break;
+        }
     }
 }
 
@@ -253,17 +277,28 @@ void tex_dump_type(FILE *tex, node_t *root)
 {
     switch (root->type)
     {
-        case NUM:   fprintf(tex, "{%lg}", root->value.number); break;
-        case VAR:
-                 {
-                    var_latex_dump(tex, root);
+        case NUM:
+        {
+            if (root->value.number < -EPSILON)
+            {
+                fprintf(tex, "(%lg)", root->value.number);
 
-                    break;
-                 }
+                break;
+            }
+            fprintf(tex, "{%lg}", root->value.number);
+
+            break;
+        }
+        case VAR:
+        {
+            var_latex_dump(tex, root);
+
+            break;
+        }
         case OP:
-                 {
-                    op_latex_dump(tex, root);
-                 }
+        {
+            op_latex_dump(tex, root);
+        }
     }
 }
 
@@ -340,7 +375,35 @@ void cot_latex_dump(FILE *tex, node_t *root)
 {
     fprintf(tex, "\\cot(");
     tex_dump_type(tex, root->left_child);
-    fprintf(tex, "}");
+    fprintf(tex, ")");
+}
+
+void arccos_latex_dump(FILE *tex, node_t *root)
+{
+    fprintf(tex, "\\cos^{-1}(");
+    tex_dump_type(tex, root->left_child);
+    fprintf(tex, ")");
+}
+
+void arcsin_latex_dump(FILE *tex, node_t *root)
+{
+    fprintf(tex, "\\sin^{-1}(");
+    tex_dump_type(tex, root->left_child);
+    fprintf(tex, ")");
+}
+
+void arctan_latex_dump(FILE *tex, node_t *root)
+{
+    fprintf(tex, "\\tan^{-1}(");
+    tex_dump_type(tex, root->left_child);
+    fprintf(tex, ")");
+}
+
+void arccot_latex_dump(FILE *tex, node_t *root)
+{
+    fprintf(tex, "\\cot^{-1}(");
+    tex_dump_type(tex, root->left_child);
+    fprintf(tex, ")");
 }
 
 void log_latex_dump(FILE *tex, node_t *root)
@@ -366,67 +429,91 @@ void op_latex_dump(FILE *tex, node_t *root)
 {
     switch (root->value.op)
     {
-        case ADD:
-                    {
-                        add_latex_dump(tex, root);
+        case ADD   :
+        {
+            add_latex_dump(tex, root);
 
-                        break;
-                    }
-        case SUB:
-                    {
-                        sub_latex_dump(tex, root);
+            break;
+        }
+        case SUB   :
+        {
+            sub_latex_dump(tex, root);
 
-                        break;
-                    }
-        case MUL:
-                    {
-                        mul_latex_dump(tex, root);
+            break;
+        }
+        case MUL   :
+        {
+            mul_latex_dump(tex, root);
 
-                        break;
-                    }
-        case DIV:
-                    {
-                        div_latex_dump(tex, root);
+            break;
+        }
+        case DIV   :
+        {
+            div_latex_dump(tex, root);
 
-                        break;
-                    }
-        case EXP:
-                    {
-                        exp_latex_dump(tex, root);
+            break;
+        }
+        case EXP   :
+        {
+            exp_latex_dump(tex, root);
 
-                        break;
-                    }
-        case LOG:
-                    {
-                        log_latex_dump(tex, root);
+            break;
+        }
+        case LOG   :
+        {
+            log_latex_dump(tex, root);
 
-                        break;
-                    }
-        case COS:
-                    {
-                        cos_latex_dump(tex, root);
+            break;
+        }
+        case COS   :
+        {
+            cos_latex_dump(tex, root);
 
-                        break;
-                    }
-        case SIN:
-                    {
-                        sin_latex_dump(tex, root);
+            break;
+        }
+        case SIN   :
+        {
+            sin_latex_dump(tex, root);
 
-                        break;
-                    }
-        case TAN:
-                    {
-                        tan_latex_dump(tex, root);
+            break;
+        }
+        case TAN   :
+        {
+            tan_latex_dump(tex, root);
 
-                        break;
-                    }
-        case COT:
-                    {
-                        cot_latex_dump(tex, root);
+            break;
+        }
+        case COT   :
+        {
+            cot_latex_dump(tex, root);
 
-                        break;
-                    }
-        case UKS: break;
+            break;
+        }
+        case ARCCOS:
+        {
+            arccos_latex_dump(tex, root);
+
+            break;
+        }
+        case ARCSIN:
+        {
+            arcsin_latex_dump(tex, root);
+
+            break;
+        }
+        case ARCTAN:
+        {
+            arctan_latex_dump(tex, root);
+
+            break;
+        }
+        case ARCCOT:
+        {
+            arccot_latex_dump(tex, root);
+
+            break;
+        }
+        case UKS   : break;
     }
 }
 

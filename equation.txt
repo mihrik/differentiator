@@ -1,1 +1,1 @@
-(cos(^(sin(x))(x)))
+(arccot(sin(^(x)(2))))
