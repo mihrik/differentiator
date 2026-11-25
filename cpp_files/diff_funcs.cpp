@@ -1,6 +1,7 @@
 #include "../h_files/diff.h"
 #include "../h_files/dsl.h"
 
+// TODO massive of funcs instead of switch
 
 error_codes read_equation(FILE *fp, node_t *node, node_t *prev_node)
 {
@@ -395,12 +396,12 @@ node_t *copy_node(const node_t *node, node_t *parent)
     return tmp;
 }
 
-node_t * diff(const node_t *node)
+node_t * diff(const node_t *node, variable var)
 {
     switch (node->type)
     {
         case NUM: return _NUM(0);
-        case VAR: return _NUM(node->value.var == VAR_X);
+        case VAR: return _NUM(node->value.var == var);
         case OP :
                  {
                       switch (node->value.op)
@@ -452,9 +453,9 @@ void set_parent(node_t *root)
     }
 }
 
-node_t * find_derivative(node_t *node, bool *error)
+node_t * find_derivative(node_t *node, bool *error, variable var)
 {
-    node_t *derivative = diff(node);
+    node_t *derivative = diff(node, var);
     simplifier(&derivative, error);
 
     return derivative;

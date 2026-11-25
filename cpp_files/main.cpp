@@ -27,7 +27,7 @@ int main(void)
 
     print_html(simplified_root, FNAME, PIC_NAME);
 
-    node_t *first_div = find_derivative(simplified_root, &error);
+    node_t *first_div = find_derivative(simplified_root, &error, VAR_X);
     if (error)
     {
         tree_dtor(first_div);
